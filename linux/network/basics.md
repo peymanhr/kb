@@ -133,7 +133,7 @@ nameserver 8.8.4.4
 `# dhclient -r eth0`
 
 ## Network Scripts
-***
+
 All the things done in the previous section is in the *memory*. all ip configuration will vanish the moment you reboot your machine. So major linux distributions offer what is called *network scripts*  which is used by network service to configure interfaces.  
 
 Network scripts are among those topics which is different from distro to distro. I will cover *Debian* and *RedHat* network scripts for all other distros are using either on of them.
@@ -203,7 +203,6 @@ DNS2=8.8.4.4
 When an interface is configured **ifup** and **ifdown** can be used to bring up pr down the interface.
 
 ## Hostname
-***
 
 - Get system hostname  
 `$ hostname`  
@@ -228,7 +227,6 @@ Edit **/etc/sysconfig/network** file. and change **HOSTNAME=**. then run the fol
 	* You may also edit your .bashrc file to permanently change PS1
 
 ## ARP cache
-***
 
 **arp** command manipulates or displays the kernel's IPv4 network arp cache. It can add entries to the table, delete one, or display the current content.
 
@@ -315,7 +313,6 @@ It is the best tool to discover **packet loss**.
 	* `-T` Use TCP instead of icmp.
 
 ## Basic Monitoring
-***
 
 There are many tools to monitor network traffic like *mrtg* and *cacti*, but I want to introduce some command line tools.
 
