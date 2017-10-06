@@ -1,4 +1,4 @@
-# Linux Network Namespaces
+# Network Namespaces in Linux
 
 ## Introduction
 
@@ -8,14 +8,14 @@ I’m using Ubuntu Server 14.04 LTS. Please note that support for network namesp
 
 ## Creating and verifying a network namespace
 
-```
+```bash
 ip netns add <namespace>
 ip netns list
 ```
 
 ## Assigning interfaces to network namespaces
 
-```
+```bash
 ip link set dev <device> netns <namespace>
 ```
 
@@ -23,15 +23,18 @@ ip link set dev <device> netns <namespace>
 
 ### Listing interfaces in a namespace
 After assigning an interface to a namespace, when listing interfaces you should see a loopback interface and the interface you assigned.
-```
+
+```bash
 ip netns exec <namespace> ip link list
 ```
+
 If you run the `ip link list` command, you’ll see that the interface has disappeared from the list. It now belongs to the namespace you assigned it.   
 
 The `ip netns exec` is how you execute commands in a different network namespace.
 
 ### Activating and adding IP address to an interface in a namespace.
-```
+
+```bash
 ip netns exec <namespace> ip link set up dev <interface>
 ip netns exec <namespace> ip addr add <ip/prefix> dev <interface>
 ```
@@ -52,10 +55,11 @@ As a result, you can use veth interfaces to connect a network namespace to anoth
 
 ### Creating veth pair and verifying it
 
-```
+```bash
 ip link add <veth> type veth peer name <veth pear>
 ip link list
 ```
+
 For example you may choose veth0 and veth1 for the names.
 
 By default all created veth interfaces belong to “default” or “global” namespace. You can assign them to other namespaces using `ip link set <veth> netns <namespace>`.
@@ -65,7 +69,7 @@ By default all created veth interfaces belong to “default” or “global” n
 Why doing it the long way !? This way you can **share a physical interface** between namespaces.
 
 #### Using linux bridge
-```
+```bash
 # setup namespace
 ip netns add ns1
 ip netns exec ns1 ip link set up lo
@@ -93,7 +97,7 @@ ip netns exec ns1 ip addr add 10.1.1.3/24 dev veth0_peer
 #### Using openvswitch
 
 ##### Install openvswitch
-```
+```bash
 apt-get install openvswitch-switch openvswitch-datapath-dkms
 echo "BRCOMPAT=yes >> /etc/default/openvswitch-switch"
 service openvswitch-switch restart
@@ -101,7 +105,7 @@ service openvswitch-switch restart
 ```
 
 ##### Setup bridge
-```
+```bash
 ...
 # setup bridge
 ovs-vsctl add-br br0
@@ -111,10 +115,8 @@ ovs-vsctl add-port br0 veth0
 ```
 
 ## Useful links
-
 - http://baturin.org/docs/iproute2/
 - http://blog.oddbit.com/2014/08/11/four-ways-to-connect-a-docker/
 - http://www.opencloudblog.com/?p=66
 - http://blog.scottlowe.org/2013/05/29/a-quick-introduction-to-linux-policy-routing/
 
-## Author: [@peymanhr](http://twitter.com/peymanhr)

@@ -1,4 +1,0 @@
-(A) Add tcpdump
-(B) Add netstat
-(C) Add policy routing
-(D) Add iptables
