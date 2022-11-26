@@ -69,6 +69,9 @@ ifconfig without any option shows only active interfaces.
 `# ifconfig eth0 192.168.1.15/24 up`  
 *netmask 255.255.255.0* can be used instead of the prefix if preferred.
 
+- Adding sub-interface  
+    `ifconfig eth0:0 10.1.1.1/24 up`
+
 ### IP configuration with *ip* command
 
 *ip* command is part of *iproute2* package and does a range of jobs like showing and manipulating link, ip address, routing table, and other things.  

@@ -48,7 +48,7 @@ import hashlib
 ### MD5
 
 ```python
->>> d = hashlib.md5('peyman'.encode())
+>>> d = hashlib.md5(b'peyman')
 >>> d.hexdigest()
 '63143b65c08954aba4763ed55365f39f'
 >>> d.digest()
@@ -64,7 +64,7 @@ b'c\x14;e\xc0\x89T\xab\xa4v>\xd5Se\xf3\x9f'
 ### SHA1
 
 ```python
->>> d = hashlib.sha1('peyman'.encode())
+>>> d = hashlib.sha1(b'peyman')
 >>> d.hexdigest()
 'cf1949bdcb6fc268196eeca78d9f46b1e471f808'
 >>> len(d.digest())
@@ -74,7 +74,7 @@ b'c\x14;e\xc0\x89T\xab\xa4v>\xd5Se\xf3\x9f'
 ### SHA512
 
 ```python
->>> d = hashlib.sha512('peyman'.encode())
+>>> d = hashlib.sha512(b'peyman')
 >>> d.hexdigest()
 'd8b486c8688b48a3d877b608c9b4cba515c2cb2aa23834e067138757bba7bf9dd4f28d50ecc6ea2e3c6f53c1d988cf7c723cd9c708e744fe46324c0e05a4c4b3'
 >>> len(d.digest())
@@ -88,9 +88,9 @@ Any hash function may be used for HMAC.
 ```python
 >>> from Crypto.Hash import MD5
 >>> from Crypto.Hash import HMAC
->>> key = 'foobar'
->>> msg = 'The req queen is crying'
->>> HMAC.new(key.encode(), msg.encode(), digestmod=MD5).hexdigest()
+>>> key = b'foobar'
+>>> msg = b'The red queen is crying'
+>>> HMAC.new(key, msg, digestmod=MD5).hexdigest()
 'd5e3e6c2dcfbe910ff1a5982b5b2f0e4'
 ```
 

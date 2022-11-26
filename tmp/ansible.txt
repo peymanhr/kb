@@ -1,0 +1,111 @@
+ip domain-name lab
+crypto key generate rsa modulus 1024
+# on router
+# crypto key generate rsa general-keys modulus 1024
+aaa new-model
+aaa authentication login default local
+username cisco secret cisco
+enable secret cisco
+
+-oKexAlgorithms=+diffie-hellman-group1-sha1 
+
+.ssh/config
+Host *
+    KexAlgorithms +diffie-hellman-group1-sha1
+    StrictHostKeyChecking no
+
+{{{{{{{{{{{{{{{{{{{{{{
+# fix "no matching cipher found" error 
+9k(config)# ssh cipher-mode weak
+
+}}}}}}}}}}}}}}}}}}}}}}
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt update
+sudo apt install ansible
+
+sudo nano /etc/ansible/hosts
+
+pip3 install ansible
+
+sudo pip3 install --upgrade cryptography
+sudo pip3 install --upgrade sensible
+
+
+ansible all -m raw -a 'show version | i uptime' -u cisco -k
+ansible all -m raw -a 'ping 172.16.1.3' -u cisco -k
+
+}}}}}}}}}}}}}}}}}}}}
+
+---
+- name: Run ping commands
+  hosts: all
+  gather_facts: false
+  remote_user: cisco
+
+  tasks:
+
+    - name: run ping
+      raw: ping 172.16.1.3
+      register: ping_result
+
+---
+- name: Run ping commands
+  hosts: all
+  gather_facts: false
+  remote_user: cisco
+  connection: local
+
+  tasks:
+    - name: configure top level configuration
+      ios_config:
+        lines: hostname foo 
+        authorize: yes 
+        auth_pass: cisco
+
+
+ansible-playbook -v test.yml -e "ansible_ssh_pass=cisco"
+
+
+}}}}}}}}}}}}}}}}}}}
+- name: configure top level configuration
+  ios_config:
+    lines: hostname {{ inventory_hostname }}
+
+- name: configure interface settings
+  ios_config:
+    lines:
+      - description test interface
+      - ip address 172.31.1.1 255.255.255.0
+    parents: interface Ethernet1
+
+- name: load new acl into device
+  ios_config:
+    lines:
+      - 10 permit ip host 1.1.1.1 any log
+      - 20 permit ip host 2.2.2.2 any log
+      - 30 permit ip host 3.3.3.3 any log
+      - 40 permit ip host 4.4.4.4 any log
+      - 50 permit ip host 5.5.5.5 any log
+    parents: ip access-list extended test
+    before: no ip access-list extended test
+    match: exact
+
+- name: check the running-config against master config
+  ios_config:
+    diff_config: intended
+    intended_config: "{{ lookup('file', 'master.cfg') }}"
+
+- name: check the startup-config against the running-config
+  ios_config:
+    diff_against: startup
+    diff_ignore_lines:
+      - ntp clock .*
+
+- name: save running to startup when modified
+  ios_config:
+    save_when: modified
+
+}}}}}}}}}}}}}}}}}}}}
+https://www.ansible.com/blog/network-device-authentication-with-ansible-2-3
+http://docs.ansible.com/ansible/latest/ios_config_module.html
+https://serversforhackers.com/c/running-ansible-programmatically

@@ -201,5 +201,6 @@ git reset HEAD <file>
 
 [Git Internals](https://git-scm.com/book/en/v1/Git-Internals-Git-Objects)
 
+[Git flight rules](https://github.com/k88hudson/git-flight-rules)
 
 [Git blob format](https://matthew-brett.github.io/curious-git/reading_git_objects.html)
